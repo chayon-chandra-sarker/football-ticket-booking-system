@@ -138,5 +138,17 @@ INSERT INTO bookings (booking_id, user_id, match_id, seat_number, payment_status
 --Query 2: Search for all users whose full names start with 'Tanvir' or contain the phrase 'Haque' (case-insensitive).
 select * from users where full_name ilike 'Tanvir%' or full_name ilike'%Haque%'
 
+--Query 3: Retrieve all booking records where the payment status is missing (NULL), replacing the empty result with 'Action Required'.
+select booking_id,
+  user_id, match_id,
+  seat_number,
+  total_cost,
+  coalesce (payment_status, 'Action Required') as payment_status
+  from bookings
+--Query 4: Retrieve match booking details along with the User's full name and the scheduled Match fixture teams.
+select bookings.booking_id, users.full_name, fixture, total_cost from bookings 
+  join matches on bookings.match_id = matches.match_id
+  join users on bookings.user_id = users.user_id
 
+  
 
